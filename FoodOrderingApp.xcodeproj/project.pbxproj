@@ -11,6 +11,7 @@
 		35417E8422EA1CAD0019A008 /* restaurantViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35417E8322EA1CAD0019A008 /* restaurantViewCell.swift */; };
 		35417E8622EA1FEF0019A008 /* restaurant2ViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35417E8522EA1FEF0019A008 /* restaurant2ViewCell.swift */; };
 		35417E8822EA3D3E0019A008 /* RestaurantProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35417E8722EA3D3E0019A008 /* RestaurantProfileViewController.swift */; };
+		356F37B722EAF08F005D4199 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F37B622EAF08F005D4199 /* TabBarController.swift */; };
 		359CDDDB22E781D30055FCE2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359CDDDA22E781D30055FCE2 /* AppDelegate.swift */; };
 		359CDDDD22E781D30055FCE2 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359CDDDC22E781D30055FCE2 /* HomeViewController.swift */; };
 		359CDDE022E781D30055FCE2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 359CDDDE22E781D30055FCE2 /* Main.storyboard */; };
@@ -23,6 +24,7 @@
 		35417E8322EA1CAD0019A008 /* restaurantViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = restaurantViewCell.swift; sourceTree = "<group>"; };
 		35417E8522EA1FEF0019A008 /* restaurant2ViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = restaurant2ViewCell.swift; sourceTree = "<group>"; };
 		35417E8722EA3D3E0019A008 /* RestaurantProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantProfileViewController.swift; sourceTree = "<group>"; };
+		356F37B622EAF08F005D4199 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		359CDDD722E781D30055FCE2 /* FoodOrderingApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FoodOrderingApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		359CDDDA22E781D30055FCE2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		359CDDDC22E781D30055FCE2 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -43,6 +45,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		356F37B522EAF061005D4199 /* TabBarController */ = {
+			isa = PBXGroup;
+			children = (
+				356F37B622EAF08F005D4199 /* TabBarController.swift */,
+			);
+			path = TabBarController;
+			sourceTree = "<group>";
+		};
+		356F37B822EAF27D005D4199 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				35417E8322EA1CAD0019A008 /* restaurantViewCell.swift */,
+				35417E8522EA1FEF0019A008 /* restaurant2ViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		356F37B922EAF3B6005D4199 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				359CDDDC22E781D30055FCE2 /* HomeViewController.swift */,
+				35417E8722EA3D3E0019A008 /* RestaurantProfileViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
 		359CDDCE22E781D20055FCE2 = {
 			isa = PBXGroup;
 			children = (
@@ -76,9 +104,8 @@
 		359CDDEC22E781F70055FCE2 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				356F37B822EAF27D005D4199 /* Cells */,
 				35417E8122EA10910019A008 /* Restaurant.swift */,
-				35417E8322EA1CAD0019A008 /* restaurantViewCell.swift */,
-				35417E8522EA1FEF0019A008 /* restaurant2ViewCell.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -94,8 +121,8 @@
 		359CDDEE22E782190055FCE2 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				359CDDDC22E781D30055FCE2 /* HomeViewController.swift */,
-				35417E8722EA3D3E0019A008 /* RestaurantProfileViewController.swift */,
+				356F37B922EAF3B6005D4199 /* ViewControllers */,
+				356F37B522EAF061005D4199 /* TabBarController */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -175,6 +202,7 @@
 				359CDDDD22E781D30055FCE2 /* HomeViewController.swift in Sources */,
 				359CDDDB22E781D30055FCE2 /* AppDelegate.swift in Sources */,
 				35417E8622EA1FEF0019A008 /* restaurant2ViewCell.swift in Sources */,
+				356F37B722EAF08F005D4199 /* TabBarController.swift in Sources */,
 				35417E8422EA1CAD0019A008 /* restaurantViewCell.swift in Sources */,
 				35417E8822EA3D3E0019A008 /* RestaurantProfileViewController.swift in Sources */,
 			);
