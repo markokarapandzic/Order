@@ -16,13 +16,15 @@ class Restaurant {
     var address: String
     var rating: String
     var servise: Int
+    var categories: [Category]
     
-    init(name: String, image: UIImage, address: String, rating: String, servise: Int) {
+    init(name: String, image: UIImage, address: String, rating: String, servise: Int, categories: [Category]) {
         self.name = name
         self.image = image
         self.address = address
         self.rating = rating
         self.servise = servise
+        self.categories = categories
     }
     
 }

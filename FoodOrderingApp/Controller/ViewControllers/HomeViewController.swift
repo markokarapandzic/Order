@@ -14,7 +14,7 @@ class HomeViewController: UIViewController, CollectionViewCellDelagate {
     @IBOutlet weak var closeByCollectionView: UICollectionView!
     
     var restaurants: [Restaurant] = []
-    var selectedRestaurant: Restaurant = Restaurant(name: "Irish Pub", image: UIImage(named: "burrito")!, address: "Dunavska 5", rating: "4.6", servise: 300)
+    var selectedRestaurant: Restaurant?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,16 +31,24 @@ class HomeViewController: UIViewController, CollectionViewCellDelagate {
         
         var loadingData: [Restaurant] = []
         
-        let restaurant1 = Restaurant(name: "Merak", image: UIImage(named: "burrito")!, address: "Novosadski Put 28", rating: "3.2", servise: 200)
-        let restaurant2 = Restaurant(name: "Petrus", image: UIImage(named: "burrito")!, address: "Centar 2", rating: "4.8", servise: 350)
-        let restaurant3 = Restaurant(name: "Retro Burger", image: UIImage(named: "burrito")!, address: "Temerinska 12", rating: "3.7", servise: 180)
-        let restaurant4 = Restaurant(name: "Caio Picerija", image: UIImage(named: "burrito")!, address: "Socijalno 78", rating: "4.2", servise: 220)
-        let restaurant5 = Restaurant(name: "Modena", image: UIImage(named: "burrito")!, address: "Centar 4", rating: "4.5", servise: 250)
-        let restaurant6 = Restaurant(name: "Irish Pub", image: UIImage(named: "burrito")!, address: "Dunavska 5", rating: "4.6", servise: 300)
-        let restaurant7 = Restaurant(name: "Atina", image: UIImage(named: "burrito")!, address: "Ribarska 8", rating: "4.0", servise: 230)
-        let restaurant8 = Restaurant(name: "Solemio", image: UIImage(named: "burrito")!, address: "Futoski Put 56", rating: "4.4", servise: 400)
-        let restaurant9 = Restaurant(name: "Foody", image: UIImage(named: "burrito")!, address: "Limanska 9", rating: "4.1", servise: 100)
-        let restaurant10 = Restaurant(name: "McDonalds", image: UIImage(named: "burrito")!, address: "Bulevar Oslobodjenja 1", rating: "4.9", servise: 350)
+        let food1 = Food(name: "Pljeskavica 200g", image: UIImage(named: "burrito")!, price: 200, options: [Option(name: "Kecap", price: 30), Option(name: "Majonez", price: 25)])
+        let food2 = Food(name: "Index sendvic", image: UIImage(named: "burrito")!, price: 250, options: [Option(name: "Sir", price: 50), Option(name: "Masline", price: 70)])
+        let food3 = Food(name: "Cezar", image: UIImage(named: "burrito")!, price: 199, options: [Option(name: "Sir", price: 50), Option(name: "Masline", price: 70)])
+        let food4 = Food(name: "Srpska", image: UIImage(named: "burrito")!, price: 100, options: [Option(name: "Sir", price: 50), Option(name: "Masline", price: 70)])
+        let category1 = Category(name: "Burgers", food: [food1, food2])
+        let category2 = Category(name: "Salads", food: [food3, food4])
+        
+        
+        let restaurant1 = Restaurant(name: "Merak", image: UIImage(named: "burrito")!, address: "Novosadski Put 28", rating: "3.2", servise: 200, categories: [category1, category2])
+        let restaurant2 = Restaurant(name: "Petrus", image: UIImage(named: "burrito")!, address: "Centar 2", rating: "4.8", servise: 350, categories: [category1, category2])
+        let restaurant3 = Restaurant(name: "Retro Burger", image: UIImage(named: "burrito")!, address: "Temerinska 12", rating: "3.7", servise: 180, categories: [category1, category2])
+        let restaurant4 = Restaurant(name: "Caio Picerija", image: UIImage(named: "burrito")!, address: "Socijalno 78", rating: "4.2", servise: 220, categories: [category1, category2])
+        let restaurant5 = Restaurant(name: "Modena", image: UIImage(named: "burrito")!, address: "Centar 4", rating: "4.5", servise: 250, categories: [category1, category2])
+        let restaurant6 = Restaurant(name: "Irish Pub", image: UIImage(named: "burrito")!, address: "Dunavska 5", rating: "4.6", servise: 300, categories: [category1, category2])
+        let restaurant7 = Restaurant(name: "Atina", image: UIImage(named: "burrito")!, address: "Ribarska 8", rating: "4.0", servise: 230, categories: [category1, category2])
+        let restaurant8 = Restaurant(name: "Solemio", image: UIImage(named: "burrito")!, address: "Futoski Put 56", rating: "4.4", servise: 400, categories: [category1, category2])
+        let restaurant9 = Restaurant(name: "Foody", image: UIImage(named: "burrito")!, address: "Limanska 9", rating: "4.1", servise: 100, categories: [category1, category2])
+        let restaurant10 = Restaurant(name: "McDonalds", image: UIImage(named: "burrito")!, address: "Bulevar Oslobodjenja 1", rating: "4.9", servise: 350, categories: [category1, category2])
         
         loadingData.append(restaurant1)
         loadingData.append(restaurant2)
@@ -70,7 +78,7 @@ class HomeViewController: UIViewController, CollectionViewCellDelagate {
     
     // Delagate Pattern
     func collectRestaurantData() -> Restaurant {
-        return selectedRestaurant
+        return selectedRestaurant!
     }
 
 }
