@@ -14,8 +14,10 @@ class Food {
     var name: String
     var image: UIImage
     var price: Int
+    var categoryID: String = "?"
     var options: [Option]
     
+    // TOOD(1): Config CategotyID
     init(name: String, image: UIImage, price: Int, options: [Option]) {
         self.name = name
         self.image = image

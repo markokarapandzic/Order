@@ -1,5 +1,5 @@
 //
-//  restaurantProfileViewController.swift
+//  RestaurantProfileViewController.swift
 //  FoodOrderingApp
 //
 //  Created by Marko K on 7/25/19.
@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ChameleonFramework
 
 protocol CollectionViewCellDelagate {
     func collectRestaurantData() -> Restaurant
@@ -19,7 +20,10 @@ struct cellData {
 
 class RestaurantProfileViewController: UIViewController {
     
+    @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var restaurantName: UILabel!
+    @IBOutlet weak var restaurantAddress: UILabel!
     
     var delagate: HomeViewController?
     var restaurant: Restaurant?
@@ -34,6 +38,12 @@ class RestaurantProfileViewController: UIViewController {
         // Table View Config
         tableView.delegate = self
         tableView.dataSource = self
+        
+        profileImage.backgroundColor = UIColor.black
+        profileImage.layer.opacity = 0.85
+        
+        restaurantName.text = restaurant?.name
+        restaurantAddress.text = restaurant?.address
         
     }
 
@@ -50,6 +60,7 @@ extension RestaurantProfileViewController: UITableViewDelegate, UITableViewDataS
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
+        // Check if Row has Section, if it doesnt return 1
         if restaurant?.categories[section].opened == true {
             return (restaurant?.categories[section].food.count)! + 1
         } else {
@@ -62,36 +73,64 @@ extension RestaurantProfileViewController: UITableViewDelegate, UITableViewDataS
         
         let dataIndex = indexPath.row - 1
         
+        // Called for first row in Section(Title)
         if indexPath.row == 0 {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "food_category", for: indexPath) as! FoodViewCell
             
             cell.name.text = restaurant?.categories[indexPath.section].name
-//            cell.layer.backgroundColor =
+            cell.backgroundColor = UIColor.flatWhite()
             
-            if restaurant?.categories[indexPath.section].opened == true {
-                cell.editImage.image = UIImage(named: "arrow-caret down")
-            } else {
-                cell.editImage.image = UIImage(named: "arrow-caret right")
-            }
-            
-            cell.addImage.image = .none
+            cell.selectionStyle = .none
+            cell.addFood.isHidden = true
+            cell.editFood.isHidden = true
             
             return cell
             
         } else {
             
+            // Called for Sections in Row
             let cell = tableView.dequeueReusableCell(withIdentifier: "food_category", for: indexPath) as! FoodViewCell
             
             cell.name?.text = restaurant?.categories[indexPath.section].food[dataIndex].name
-            cell.editImage.image = UIImage(named: "food-edit")
-            cell.addImage.image = UIImage(named: "food-add")
+            
+            cell.selectionStyle = .none
+            cell.addFood.isHidden = false
+            cell.editFood.isHidden = false
+            
+            // Config Button Tapped
+            cell.addFood.food = restaurant?.categories[indexPath.section].food[dataIndex]
+            cell.addFood.addTarget(self, action: #selector(onAddFood), for: .touchUpInside)
+            cell.editFood.addTarget(self, action: #selector(onEditFood(sender:)), for: .touchUpInside)
             
             return cell
         }
         
     }
     
+    // Execute when Add Image is presed
+    @objc func onAddFood(sender: SubclassUIButton) {
+        
+        let buttonTag = sender.food
+        
+        print("=============================")
+        print(buttonTag!.name)
+        print("=============================")
+        
+    }
+    
+    // Execute when Edit Image is presed
+    @objc func onEditFood(sender: UIButton) {
+        
+        let buttonTag = sender.tag
+        
+        print("=============================")
+        print(buttonTag)
+        print("=============================")
+        
+    }
+    
+    // Check if Cell is open or closed
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.row == 0 {
@@ -112,4 +151,10 @@ extension RestaurantProfileViewController: UITableViewDelegate, UITableViewDataS
         
     }
     
+}
+
+// MARK: - Config UIButton
+
+class SubclassUIButton: UIButton {
+    var food: Food?
 }

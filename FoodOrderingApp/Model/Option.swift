@@ -12,6 +12,7 @@ class Option {
     
     var name: String
     var price: Int
+    var foodID: String = "?"
     
     init(name: String, price: Int) {
         self.name = name

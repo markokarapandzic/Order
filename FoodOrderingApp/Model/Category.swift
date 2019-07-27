@@ -12,6 +12,7 @@ class Category {
     
     var name: String
     var food: [Food]
+    var restaurantID: String = "?"
     var opened: Bool = false
     
     init(name: String, food: [Food]) {

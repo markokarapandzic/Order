@@ -7,12 +7,14 @@
 //
 
 import UIKit
+import Firebase
 
 class HomeViewController: UIViewController, CollectionViewCellDelagate {
     
     @IBOutlet weak var bestRatingCollectionView: UICollectionView!
     @IBOutlet weak var closeByCollectionView: UICollectionView!
     
+    var dbReference: Firestore!
     var restaurants: [Restaurant] = []
     var selectedRestaurant: Restaurant?
     
@@ -20,10 +22,33 @@ class HomeViewController: UIViewController, CollectionViewCellDelagate {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
+        // Ger Firebase DB Reference
+        dbReference = Firestore.firestore()
+        
         closeByCollectionView.layer.cornerRadius = 6.0
         bestRatingCollectionView.layer.cornerRadius = 6.0
         
         restaurants = loadData()
+        
+        print("Inside viewDidLoad Function")
+//        retriveDBData()
+        
+    }
+    
+    // Get Data from Firebase Firestore
+    func retriveDBData() {
+        
+        dbReference.collection("food").getDocuments() { (querySnapshot, error) in
+            
+            if error != nil {
+                print("Error getting data from Firestore")
+            } else {
+                for document in querySnapshot!.documents {
+                    print("\(document.documentID) => \(document.data())")
+                }
+            }
+            
+        }
         
     }
     
