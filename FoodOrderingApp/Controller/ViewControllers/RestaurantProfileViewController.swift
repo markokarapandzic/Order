@@ -92,6 +92,8 @@ class RestaurantProfileViewController: UIViewController {
     // Get Food per Category From Firestore
     func getFoodFromFirestore() {
         
+//        dbReference?.collection("food")
+        
         for (index, category) in categories.enumerated() {
             print("========================CATEGORY BEGINING========================")
             print("\(category.food)")
@@ -220,14 +222,15 @@ extension RestaurantProfileViewController: UITableViewDelegate, UITableViewDataS
         if foodCart != nil {
             
             foodCart?.updateData([
-                "foodIDs": FieldValue.arrayUnion([selectedFood?.foodID ?? "No Food Selected"])
+                "food": FieldValue.arrayUnion(["\(selectedFood?.name ?? "No Food Name"),\(selectedFood!.price)" ])
             ])
             
             notifyUserFoodAdded(selectedFood: selectedFood!)
             
         } else {
             foodCart = dbReference!.collection("carts").addDocument(data: [
-                "foodIDs": FieldValue.arrayUnion([selectedFood?.foodID ?? "No Food Selected"])
+                "restaurantID": restaurant?.restaurantID ?? "No Restaurant ID",
+                "food": FieldValue.arrayUnion(["\(selectedFood?.name ?? "No Food Name"),\(selectedFood!.price)" ])
             ]) { err in
                 
                 if let err = err {
@@ -237,12 +240,9 @@ extension RestaurantProfileViewController: UITableViewDelegate, UITableViewDataS
                     
                     // Save to UserDefauls
                     UserDefaults.standard.set(self.foodCart?.documentID, forKey: "cartID")
-                    print(UserDefaults.standard.dictionaryRepresentation()) // Print all UserDefaults Data
                     
                     self.notifyUserFoodAdded(selectedFood: selectedFood!)
                     
-                    // Read data from UserDefaults
-//                    UserDefaults.standard.object(forKey: "cartID")
                 }
                 
             }
