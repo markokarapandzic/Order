@@ -11,18 +11,20 @@ import UIKit
 
 class Food {
     
+    var foodID: String
     var name: String
     var image: UIImage
     var price: Int
     var categoryID: String = "?"
-    var options: [Option]
+//    var options: [Option]
     
     // TOOD(1): Config CategotyID
-    init(name: String, image: UIImage, price: Int, options: [Option]) {
+    init(foodID: String, name: String, image: UIImage, price: Int, categoryID: String) {
+        self.foodID = foodID
         self.name = name
         self.image = image
         self.price = price
-        self.options = options
+        self.categoryID = categoryID
     }
     
 }

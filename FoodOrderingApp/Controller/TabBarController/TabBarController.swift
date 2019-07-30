@@ -51,11 +51,3 @@ class TabBarController: UITabBarController {
     }
 
 }
-
-extension UIImage {
-    
-//    func imageWithColor(color: UIColor, size: CGSize) -> UIImage {
-//
-//    }
-    
-}

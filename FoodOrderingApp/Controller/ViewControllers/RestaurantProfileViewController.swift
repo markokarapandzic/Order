@@ -8,6 +8,8 @@
 
 import UIKit
 import ChameleonFramework
+import Firebase
+import NotificationBannerSwift
 
 protocol CollectionViewCellDelagate {
     func collectRestaurantData() -> Restaurant
@@ -25,12 +27,19 @@ class RestaurantProfileViewController: UIViewController {
     @IBOutlet weak var restaurantName: UILabel!
     @IBOutlet weak var restaurantAddress: UILabel!
     
+    var dbReference: Firestore?
     var delagate: HomeViewController?
     var restaurant: Restaurant?
     var tableViewData = [cellData]()
+    var categories: [Category] = []
+    var food: [Food] = []
+    var foodCart: DocumentReference? = nil
+    var banner: NotificationBanner?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        dbReference = Firestore.firestore()
 
         // Do any additional setup after loading the view.
         restaurant = (delagate?.collectRestaurantData())!
@@ -39,6 +48,8 @@ class RestaurantProfileViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
+        getFirestoreData()
+        
         profileImage.backgroundColor = UIColor.black
         profileImage.layer.opacity = 0.85
         
@@ -46,7 +57,93 @@ class RestaurantProfileViewController: UIViewController {
         restaurantAddress.text = restaurant?.address
         
     }
-
+    
+    // MARK: - Firebase Operations
+    
+    func getFirestoreData() {
+        
+        dbReference?.collection("categories").whereField("restaurantID", isEqualTo: String(restaurant!.restaurantID)).getDocuments() { (snapshot, error) in
+            
+            if let err = error {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in snapshot!.documents {
+                    print("\(document.documentID) => \(document.data())")
+                    
+                    let pCategory = Category(
+                        categoryID: document.documentID,
+                        name: document.data()["name"] as! String,
+                        restaurantID: document.data()["restaurantID"] as! String
+                    )
+                    
+                    self.categories.append(pCategory)
+                }
+                
+                self.getFoodFromFirestore()
+                
+            }
+            
+        }
+        
+        
+    }
+    
+    // TODO(1): ASYNC Two Thread at the same time enter(Double values)
+    // Get Food per Category From Firestore
+    func getFoodFromFirestore() {
+        
+        for (index, category) in categories.enumerated() {
+            print("========================CATEGORY BEGINING========================")
+            print("\(category.food)")
+            dbReference!.collection("food").whereField("categoryID", isEqualTo: category.categoryID)
+                .getDocuments() { (querySnapshot, err) in
+                    if let err = err {
+                        print("Error getting documents: \(err)")
+                    } else {
+                        for document in querySnapshot!.documents {
+                            
+                            let pFood = Food(
+                                foodID: document.documentID,
+                                name: document.data()["name"] as! String,
+                                image: UIImage(named: "burrito")!,
+                                price: document.data()["price"] as! Int,
+                                categoryID: document.data()["categoryID"] as! String
+                            )
+                            
+                            category.food.append(pFood)
+                            print("\(category.name) => \(pFood.name)")
+                        }
+                        
+                        self.categories[index].food.append(contentsOf: category.food)
+                        print("========================CATEGORY========================")
+                        print("Name: \(self.categories[index].name)")
+                        print("Food: \(category.food)")
+                        
+//                        self.categories[index].food = self.categories[index].food.removingDuplicates(byKey: \.categoryID)
+//                        print("========================CATEGORY-AFTER-SORT========================")
+//                        print("Name: \(self.categories[index].name)")
+//                        print("Food: \(category.food)")
+                    }
+            }
+        }
+        
+        tableView.reloadData()
+        
+    }
+    
+    // Remove Duplicates
+    func uniq<S : Sequence, T : Hashable>(source: S) -> [T] where S.Iterator.Element == T {
+        var buffer = [T]()
+        var added = Set<T>()
+        for elem in source {
+            if !added.contains(elem) {
+                buffer.append(elem)
+                added.insert(elem)
+            }
+        }
+        return buffer
+    }
+    
 }
 
 
@@ -55,14 +152,14 @@ class RestaurantProfileViewController: UIViewController {
 extension RestaurantProfileViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return (restaurant?.categories.count)!
+        return (categories.count)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         // Check if Row has Section, if it doesnt return 1
-        if restaurant?.categories[section].opened == true {
-            return (restaurant?.categories[section].food.count)! + 1
+        if categories[section].opened == true {
+            return (categories[section].food.count) + 1
         } else {
             return 1
         }
@@ -78,7 +175,7 @@ extension RestaurantProfileViewController: UITableViewDelegate, UITableViewDataS
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "food_category", for: indexPath) as! FoodViewCell
             
-            cell.name.text = restaurant?.categories[indexPath.section].name
+            cell.name.text = categories[indexPath.section].name
             cell.backgroundColor = UIColor.flatWhite()
             
             cell.selectionStyle = .none
@@ -92,14 +189,19 @@ extension RestaurantProfileViewController: UITableViewDelegate, UITableViewDataS
             // Called for Sections in Row
             let cell = tableView.dequeueReusableCell(withIdentifier: "food_category", for: indexPath) as! FoodViewCell
             
-            cell.name?.text = restaurant?.categories[indexPath.section].food[dataIndex].name
+            cell.name?.text = categories[indexPath.section].food[dataIndex].name
             
             cell.selectionStyle = .none
             cell.addFood.isHidden = false
             cell.editFood.isHidden = false
             
+            // Define Color Animation
+//            let colorAnimation = CABasicAnimation(keyPath: "backgroundColor")
+//            colorAnimation.fromValue = UIColor.flatRed()?.cgColor
+//            colorAnimation.duration = 1
+            
             // Config Button Tapped
-            cell.addFood.food = restaurant?.categories[indexPath.section].food[dataIndex]
+            cell.addFood.food = categories[indexPath.section].food[dataIndex]
             cell.addFood.addTarget(self, action: #selector(onAddFood), for: .touchUpInside)
             cell.editFood.addTarget(self, action: #selector(onEditFood(sender:)), for: .touchUpInside)
             
@@ -108,15 +210,48 @@ extension RestaurantProfileViewController: UITableViewDelegate, UITableViewDataS
         
     }
     
+    // MARK: - Adding to Food Cart
+    
     // Execute when Add Image is presed
     @objc func onAddFood(sender: SubclassUIButton) {
         
-        let buttonTag = sender.food
+        let selectedFood = sender.food
         
-        print("=============================")
-        print(buttonTag!.name)
-        print("=============================")
+        if foodCart != nil {
+            
+            foodCart?.updateData([
+                "foodIDs": FieldValue.arrayUnion([selectedFood?.foodID ?? "No Food Selected"])
+            ])
+            
+            notifyUserFoodAdded(selectedFood: selectedFood!)
+            
+        } else {
+            foodCart = dbReference!.collection("carts").addDocument(data: [
+                "foodIDs": FieldValue.arrayUnion([selectedFood?.foodID ?? "No Food Selected"])
+            ]) { err in
+                
+                if let err = err {
+                    print("Error adding Food to Cart: \(err)")
+                } else {
+                    print("Document added to CART with ID: \(self.foodCart!.documentID)")
+                    
+                    // Save to UserDefauls
+                    UserDefaults.standard.set(self.foodCart?.documentID, forKey: "cartID")
+                    print(UserDefaults.standard.dictionaryRepresentation()) // Print all UserDefaults Data
+                    
+                    self.notifyUserFoodAdded(selectedFood: selectedFood!)
+                    
+                    // Read data from UserDefaults
+//                    UserDefaults.standard.object(forKey: "cartID")
+                }
+                
+            }
+        }
         
+    }
+    
+    func notifyUserFoodAdded(selectedFood: Food) {
+        NotificationBanner(title: "Food Added", subtitle: selectedFood.name, style: .success).show()
     }
     
     // Execute when Edit Image is presed
@@ -134,23 +269,38 @@ extension RestaurantProfileViewController: UITableViewDelegate, UITableViewDataS
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.row == 0 {
-            if restaurant?.categories[indexPath.section].opened == true {
-                
-                restaurant?.categories[indexPath.section].opened = false
+            if categories[indexPath.section].opened == true {
+
+                categories[indexPath.section].opened = false
                 let section = IndexSet.init(integer: indexPath.section)
                 tableView.reloadSections(section, with: .left)
-                
+
             } else {
-                
-                restaurant?.categories[indexPath.section].opened = true
+
+                categories[indexPath.section].opened = true
                 let section = IndexSet.init(integer: indexPath.section)
                 tableView.reloadSections(section, with: .right)
-                
+
             }
         }
         
     }
     
+}
+
+extension Array where Iterator.Element == Food {
+    func removingDuplicates<T: Equatable>(byKey key: KeyPath<Element, T>)  -> [Element] {
+        var result = [Element]()
+        var seen = [T]()
+        for value in self {
+            let key = value[keyPath: key]
+            if !seen.contains(key) {
+                seen.append(key)
+                result.append(value)
+            }
+        }
+        return result
+    }
 }
 
 // MARK: - Config UIButton
