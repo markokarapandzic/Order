@@ -10,13 +10,16 @@ import Foundation
 
 class Category {
     
+    var categoryID: String
     var name: String
-    var food: [Food]
+    var restaurantID: String
     var opened: Bool = false
+    var food: [Food] = []
     
-    init(name: String, food: [Food]) {
+    init(categoryID: String, name: String, restaurantID: String) {
+        self.categoryID = categoryID
         self.name = name
-        self.food = food
+        self.restaurantID = restaurantID
     }
     
 }

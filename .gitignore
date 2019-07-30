@@ -6,6 +6,9 @@
 build/
 DerivedData/
 
+## Security Files
+SupportingFiles/
+
 ## Various settings
 *.pbxuser
 !default.pbxuser

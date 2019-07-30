@@ -11,20 +11,21 @@ import UIKit
 
 class Restaurant {
     
+    var restaurantID: String
     var name: String
     var image: UIImage
     var address: String
     var rating: String
     var servise: Int
-    var categories: [Category]
+//    var categories: [Category]
     
-    init(name: String, image: UIImage, address: String, rating: String, servise: Int, categories: [Category]) {
+    init(restaurantID: String, name: String, image: UIImage, address: String, rating: String, servise: Int) {
+        self.restaurantID = restaurantID
         self.name = name
         self.image = image
         self.address = address
         self.rating = rating
         self.servise = servise
-        self.categories = categories
     }
     
 }
