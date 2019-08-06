@@ -121,10 +121,6 @@
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
-                                <connections>
-                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="DZi-bc-5ly"/>
-                                    <outlet property="delegate" destination="BYZ-38-t0r" id="7yi-oP-kNy"/>
-                                </connections>
                             </collectionView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Best Rating" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MV7-pW-I1r">
                                 <rect key="frame" x="20" y="417" width="88" height="21"/>
@@ -209,10 +205,6 @@
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
-                                <connections>
-                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="Bhy-DD-VUS"/>
-                                    <outlet property="delegate" destination="BYZ-38-t0r" id="aId-3t-LHq"/>
-                                </connections>
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" red="0.83921568627450982" green="0.83921568627450982" blue="0.83921568627450982" alpha="1" colorSpace="calibratedRGB"/>
@@ -301,9 +293,9 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="addFood" destination="g8m-yw-BjZ" id="l0c-dY-WXt"/>
-                                            <outlet property="editFood" destination="Sno-ST-exC" id="xPJ-pg-OD8"/>
-                                            <outlet property="name" destination="q0T-as-Q3l" id="Fr4-3r-5py"/>
+                                            <outlet property="addFood" destination="g8m-yw-BjZ" id="aK0-av-ZSK"/>
+                                            <outlet property="editFood" destination="Sno-ST-exC" id="1Q3-fl-PUn"/>
+                                            <outlet property="name" destination="q0T-as-Q3l" id="tqj-nb-tjM"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -587,26 +579,79 @@
             </objects>
             <point key="canvasLocation" x="45" y="-953"/>
         </scene>
-        <!--View Controller-->
+        <!--Favourites Controller-->
         <scene sceneID="ZRI-aa-Ec3">
             <objects>
-                <viewController storyboardIdentifier="Favourites" id="reR-PD-7I4" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Favourites" id="reR-PD-7I4" customClass="FavouritesController" customModule="FoodOrderingApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hDx-Id-13S">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Favourites" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X4u-vT-1CK">
-                                <rect key="frame" x="150" y="438" width="114" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="p4y-nt-GW3">
+                                <rect key="frame" x="0.0" y="135" width="414" height="761"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="favouriteRestaurant" id="yIw-Q0-OSF" customClass="FavouritesCell" customModule="FoodOrderingApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="yIw-Q0-OSF" id="C6Y-bf-EOd">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Merak" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HLw-Tr-xII">
+                                                    <rect key="frame" x="20" y="6" width="124" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Novosadski Put 28" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rmh-G1-RML">
+                                                    <rect key="frame" x="20" y="22" width="92" height="14"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="12"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="200RSD" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sIY-Uq-NOu">
+                                                    <rect key="frame" x="287" y="11" width="107" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.1960784314" green="0.80392156859999997" blue="0.1960784314" alpha="0.90000000000000002" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="addressLbl" destination="rmh-G1-RML" id="MuY-ZJ-2Lr"/>
+                                            <outlet property="nameLbl" destination="HLw-Tr-xII" id="Z7p-2f-nu6"/>
+                                            <outlet property="serviseLbl" destination="sIY-Uq-NOu" id="nem-vU-7QT"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Favourites" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d3J-tX-VLx">
+                                <rect key="frame" x="76" y="67" width="262" height="60"/>
+                                <fontDescription key="fontDescription" name="HoeflerText-Regular" family="Hoefler Text" pointSize="60"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="p4y-nt-GW3" firstAttribute="top" secondItem="d3J-tX-VLx" secondAttribute="bottom" constant="8" symbolic="YES" id="74L-Ii-RjN"/>
+                            <constraint firstItem="SDR-w5-7HS" firstAttribute="trailing" secondItem="d3J-tX-VLx" secondAttribute="trailing" constant="76" id="DOq-vW-z6C"/>
+                            <constraint firstItem="d3J-tX-VLx" firstAttribute="top" secondItem="SDR-w5-7HS" secondAttribute="top" constant="23" id="IqB-Jr-xrs"/>
+                            <constraint firstAttribute="bottom" secondItem="p4y-nt-GW3" secondAttribute="bottom" id="Q4e-de-N2p"/>
+                            <constraint firstItem="p4y-nt-GW3" firstAttribute="trailing" secondItem="SDR-w5-7HS" secondAttribute="trailing" id="Qgw-x2-WH1"/>
+                            <constraint firstItem="d3J-tX-VLx" firstAttribute="leading" secondItem="SDR-w5-7HS" secondAttribute="leading" constant="76" id="ayp-wA-uJD"/>
+                            <constraint firstItem="p4y-nt-GW3" firstAttribute="leading" secondItem="SDR-w5-7HS" secondAttribute="leading" id="xpu-TE-Lhg"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="SDR-w5-7HS"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="" id="0Bv-Yj-qx5"/>
+                    <connections>
+                        <outlet property="mTableView" destination="p4y-nt-GW3" id="659-K8-RB3"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Uty-QA-09j" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

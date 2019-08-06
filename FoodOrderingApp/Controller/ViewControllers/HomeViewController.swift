@@ -8,6 +8,8 @@
 
 import UIKit
 import Firebase
+import RxSwift
+import RxCocoa
 
 class HomeViewController: UIViewController, CollectionViewCellDelagate {
     
@@ -17,6 +19,8 @@ class HomeViewController: UIViewController, CollectionViewCellDelagate {
     var dbReference: Firestore!
     var restaurants: [Restaurant] = []
     var selectedRestaurant: Restaurant?
+    var rxRestaurants: BehaviorRelay<[Restaurant]> = BehaviorRelay(value: [])
+    let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +33,12 @@ class HomeViewController: UIViewController, CollectionViewCellDelagate {
         
         closeByCollectionView.layer.cornerRadius = 6.0
         bestRatingCollectionView.layer.cornerRadius = 6.0
+        
+        // RxSwift Methods
+        handleCollectionViewDisplayCloseBy()
+        handleCollectionViewDisplayBestRating()
+        handeCollectionViewTappingCloseBy()
+        handeCollectionViewTappingBestRating()
         
     }
     
@@ -54,12 +64,12 @@ class HomeViewController: UIViewController, CollectionViewCellDelagate {
                     
                     self.restaurants.append(pRestaurant)
                     
+                    // Add with RxSwift
+                    let newValue = self.rxRestaurants.value + [pRestaurant]
+                    self.rxRestaurants.accept(newValue)
+                    
                 }
             }
-            
-            // Reload Data to Collection View's
-            self.closeByCollectionView.reloadData()
-            self.bestRatingCollectionView.reloadData()
             
         }
         
@@ -85,45 +95,90 @@ class HomeViewController: UIViewController, CollectionViewCellDelagate {
 
 // MARK: - Collection View Config
 
-extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+//extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+//
+//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        return restaurants.count
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//
+//        // Setting up CloseBy Collection View
+//        if collectionView == self.closeByCollectionView {
+//
+//            let restaurant = restaurants[indexPath.row]
+//
+//            let cell = closeByCollectionView.dequeueReusableCell(withReuseIdentifier: "closeByCell", for: indexPath) as! restaurantViewCell
+//
+//            cell.setData(restaurant)
+//
+//            return cell
+//
+//        } else {
+//
+//            print(restaurants)
+//            // Setting up BestRating Collection View
+//            let restaurant = restaurants[indexPath.row]
+//
+//            let cell = bestRatingCollectionView.dequeueReusableCell(withReuseIdentifier: "bestRatingCell", for: indexPath) as! restaurant2ViewCell
+//
+//            cell.setData(restaurant)
+//
+//            return cell
+//
+//        }
+//
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//
+//        selectedRestaurant = restaurants[indexPath.row]
+//
+//    }
+//
+//}
+
+//MARK: - RxSwift Config
+extension HomeViewController {
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return restaurants.count
+    // Handling Display for Best Rating Collection View
+    func handleCollectionViewDisplayBestRating() {
+        rxRestaurants.bind(to: bestRatingCollectionView
+            .rx
+            .items(cellIdentifier: "bestRatingCell", cellType: restaurant2ViewCell.self)) { row, data, cell in
+                cell.setData(data)
+            }
+            .disposed(by: disposeBag)
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        // Setting up CloseBy Collection View
-        if collectionView == self.closeByCollectionView {
-            
-            let restaurant = restaurants[indexPath.row]
-            
-            let cell = closeByCollectionView.dequeueReusableCell(withReuseIdentifier: "closeByCell", for: indexPath) as! restaurantViewCell
-            
-            cell.setData(restaurant)
-            
-            return cell
-            
-        } else {
-            
-            print(restaurants)
-            // Setting up BestRating Collection View
-            let restaurant = restaurants[indexPath.row]
-            
-            let cell = bestRatingCollectionView.dequeueReusableCell(withReuseIdentifier: "bestRatingCell", for: indexPath) as! restaurant2ViewCell
-            
-            cell.setData(restaurant)
-            
-            return cell
-            
-        }
-        
+    // Handling Display for Close By Collection View
+    func handleCollectionViewDisplayCloseBy() {
+        rxRestaurants.bind(to: closeByCollectionView
+            .rx
+            .items(cellIdentifier: "closeByCell", cellType: restaurantViewCell.self)) { row, data, cell in
+                cell.setData(data)
+            }
+            .disposed(by: disposeBag)
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
-        selectedRestaurant = restaurants[indexPath.row]
-
+    // Handle Tapping for Close By Collection
+    func handeCollectionViewTappingCloseBy() {
+        closeByCollectionView.rx
+            .modelSelected(Restaurant.self)
+            .subscribe(onNext: { [unowned self] restaurant in
+                self.selectedRestaurant = restaurant
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    // Handle Tapping for Best Rating Collection
+    func handeCollectionViewTappingBestRating() {
+        bestRatingCollectionView.rx
+            .modelSelected(Restaurant.self)
+            .subscribe(onNext: { [unowned self] restaurant in
+                self.selectedRestaurant = restaurant
+            })
+            .disposed(by: disposeBag)
     }
     
 }
