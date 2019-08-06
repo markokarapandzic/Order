@@ -17,7 +17,6 @@ class HomeViewController: UIViewController, CollectionViewCellDelagate {
     @IBOutlet weak var closeByCollectionView: UICollectionView!
     
     var dbReference: Firestore!
-    var restaurants: [Restaurant] = []
     var selectedRestaurant: Restaurant?
     var rxRestaurants: BehaviorRelay<[Restaurant]> = BehaviorRelay(value: [])
     let disposeBag = DisposeBag()
@@ -62,8 +61,6 @@ class HomeViewController: UIViewController, CollectionViewCellDelagate {
                         servise: document.data()["servise"] as! Int
                     )
                     
-                    self.restaurants.append(pRestaurant)
-                    
                     // Add with RxSwift
                     let newValue = self.rxRestaurants.value + [pRestaurant]
                     self.rxRestaurants.accept(newValue)
@@ -92,51 +89,6 @@ class HomeViewController: UIViewController, CollectionViewCellDelagate {
     }
 
 }
-
-// MARK: - Collection View Config
-
-//extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-//
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return restaurants.count
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//
-//        // Setting up CloseBy Collection View
-//        if collectionView == self.closeByCollectionView {
-//
-//            let restaurant = restaurants[indexPath.row]
-//
-//            let cell = closeByCollectionView.dequeueReusableCell(withReuseIdentifier: "closeByCell", for: indexPath) as! restaurantViewCell
-//
-//            cell.setData(restaurant)
-//
-//            return cell
-//
-//        } else {
-//
-//            print(restaurants)
-//            // Setting up BestRating Collection View
-//            let restaurant = restaurants[indexPath.row]
-//
-//            let cell = bestRatingCollectionView.dequeueReusableCell(withReuseIdentifier: "bestRatingCell", for: indexPath) as! restaurant2ViewCell
-//
-//            cell.setData(restaurant)
-//
-//            return cell
-//
-//        }
-//
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//
-//        selectedRestaurant = restaurants[indexPath.row]
-//
-//    }
-//
-//}
 
 //MARK: - RxSwift Config
 extension HomeViewController {

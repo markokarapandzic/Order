@@ -88,20 +88,17 @@ class RestaurantProfileViewController: UIViewController {
         
     }
     
-    // TODO(1): ASYNC Two Thread at the same time enter(Double values)
     // Get Food per Category From Firestore
     func getFoodFromFirestore() {
         
-//        dbReference?.collection("food")
-        
         for (index, category) in categories.enumerated() {
-            print("========================CATEGORY BEGINING========================")
-            print("\(category.food)")
+            
             dbReference!.collection("food").whereField("categoryID", isEqualTo: category.categoryID)
                 .getDocuments() { (querySnapshot, err) in
                     if let err = err {
                         print("Error getting documents: \(err)")
                     } else {
+                        
                         for document in querySnapshot!.documents {
                             
                             let pFood = Food(
@@ -117,14 +114,6 @@ class RestaurantProfileViewController: UIViewController {
                         }
                         
                         self.categories[index].food.append(contentsOf: category.food)
-                        print("========================CATEGORY========================")
-                        print("Name: \(self.categories[index].name)")
-                        print("Food: \(category.food)")
-                        
-//                        self.categories[index].food = self.categories[index].food.removingDuplicates(byKey: \.categoryID)
-//                        print("========================CATEGORY-AFTER-SORT========================")
-//                        print("Name: \(self.categories[index].name)")
-//                        print("Food: \(category.food)")
                     }
             }
         }
@@ -197,11 +186,6 @@ extension RestaurantProfileViewController: UITableViewDelegate, UITableViewDataS
             cell.addFood.isHidden = false
             cell.editFood.isHidden = false
             
-            // Define Color Animation
-//            let colorAnimation = CABasicAnimation(keyPath: "backgroundColor")
-//            colorAnimation.fromValue = UIColor.flatRed()?.cgColor
-//            colorAnimation.duration = 1
-            
             // Config Button Tapped
             cell.addFood.food = categories[indexPath.section].food[dataIndex]
             cell.addFood.addTarget(self, action: #selector(onAddFood), for: .touchUpInside)
@@ -257,11 +241,7 @@ extension RestaurantProfileViewController: UITableViewDelegate, UITableViewDataS
     // Execute when Edit Image is presed
     @objc func onEditFood(sender: UIButton) {
         
-        let buttonTag = sender.tag
-        
-        print("=============================")
-        print(buttonTag)
-        print("=============================")
+//        let buttonTag = sender.tag
         
     }
     

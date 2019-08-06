@@ -33,51 +33,6 @@ extension FavouritesController {
 
 extension FavouritesController {
     
-    func addUsersToDatabase() {
-        
-        let docData: [String: Any] = [
-            "username": "Marko",
-            "password": "testtest123",
-            "email": "marko@gmail.com",
-            "address": "Veternik 22",
-            "restaurants": [
-                [
-                    "restaurantID": "1aJJZdlpbTpW4BPJgxMr",
-                    "name": "Modena",
-                    "Address": "Centar 4",
-                    "image": "???",
-                    "rating": "4.5",
-                    "servise": 250
-                ],
-                [
-                    "restaurantID": "6oAvEgbZVpEsRnSBltYq",
-                    "name": "Solemio",
-                    "Address": "Futoski Put 56",
-                    "image": "???",
-                    "rating": "4.3",
-                    "servise": 400
-                ],
-                [
-                    "restaurantID": "8389012830jdas",
-                    "name": "Merak",
-                    "Address": "Novosadski Put 28",
-                    "image": "???",
-                    "rating": "4.8",
-                    "servise": 200
-                ]
-            ]
-        ]
-        
-        dbReference?.collection("users").addDocument(data: docData, completion: { (error) in
-            if let err = error {
-                print("Error writing document to Users Collection: \(err)")
-            } else {
-                print("Document successfully written!")
-            }
-        })
-    
-    }
-    
     func getFavouritesFromDatabase() {
         
         dbReference?.collection("users").document("5Trlr4CSkEYLvf2lJnX3").getDocument(completion: { (snapshot, error) in
