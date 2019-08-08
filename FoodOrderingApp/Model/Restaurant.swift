@@ -31,7 +31,40 @@ class Restaurant {
     }
     
     //MARK: - Firebase Functions
-    static func getAllData(dbReference: Firestore, restaurants: BehaviorRelay<[Restaurant]>) {
+    static func getAllData(dbReference: Firestore, completion: @escaping ((_ data: [Restaurant]) -> Void)) {
+        
+        var restaurantsArray: [Restaurant] = []
+        
+        dbReference.collection("restaurants").getDocuments() { (querySnapshot, error) in
+            
+            if error != nil {
+                print("Error getting data from Firestore")
+            } else {
+                for document in querySnapshot!.documents {
+                    print("\(document.documentID) => \(document.data())")
+                    
+                    let pRestaurant = Restaurant(
+                        restaurantID: document.documentID,
+                        name: document.data()["name"] as! String,
+                        image: UIImage(named: "burrito")!,
+                        address: document.data()["address"] as! String,
+                        rating: document.data()["rating"] as! String,
+                        servise: document.data()["servise"] as! Int
+                    )
+                    
+                    restaurantsArray.append(pRestaurant)
+                    
+                }
+                
+                completion(restaurantsArray)
+                
+            }
+            
+        }
+        
+    }
+    
+    static func getFavouriteData(dbReference: Firestore, restaurants: BehaviorRelay<[Restaurant]>) {
         
         dbReference.collection("users").document("5Trlr4CSkEYLvf2lJnX3").getDocument(completion: { (snapshot, error) in
             

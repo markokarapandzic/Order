@@ -60,32 +60,11 @@ class RestaurantProfileViewController: UIViewController {
     
     // MARK: - Firebase Operations
     
-    func getFirestoreData() {
-        
-        dbReference?.collection("categories").whereField("restaurantID", isEqualTo: String(restaurant!.restaurantID)).getDocuments() { (snapshot, error) in
-            
-            if let err = error {
-                print("Error getting documents: \(err)")
-            } else {
-                for document in snapshot!.documents {
-                    print("\(document.documentID) => \(document.data())")
-                    
-                    let pCategory = Category(
-                        categoryID: document.documentID,
-                        name: document.data()["name"] as! String,
-                        restaurantID: document.data()["restaurantID"] as! String
-                    )
-                    
-                    self.categories.append(pCategory)
-                }
-                
-                self.getFoodFromFirestore()
-                
-            }
-            
+    func getFirestoreData() { // Callback that Returns Firebase Data
+        Category.getCategoriesByRestaurantID(dbReference: dbReference!, restaurantID: String(restaurant!.restaurantID)) { [weak self] categories in
+                self?.categories = categories
+                self?.getFoodFromFirestore()
         }
-        
-        
     }
     
     // Get Food per Category From Firestore

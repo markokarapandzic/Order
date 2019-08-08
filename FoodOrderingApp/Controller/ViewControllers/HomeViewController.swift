@@ -44,30 +44,8 @@ class HomeViewController: UIViewController, CollectionViewCellDelagate {
     // Get Data from Firebase Firestore
     func retriveDBData() {
         
-        dbReference.collection("restaurants").getDocuments() { (querySnapshot, error) in
-            
-            if error != nil {
-                print("Error getting data from Firestore")
-            } else {
-                for document in querySnapshot!.documents {
-                    print("\(document.documentID) => \(document.data())")
-                    
-                    let pRestaurant = Restaurant(
-                        restaurantID: document.documentID,
-                        name: document.data()["name"] as! String,
-                        image: UIImage(named: "burrito")!,
-                        address: document.data()["address"] as! String,
-                        rating: document.data()["rating"] as! String,
-                        servise: document.data()["servise"] as! Int
-                    )
-                    
-                    // Add with RxSwift
-                    let newValue = self.rxRestaurants.value + [pRestaurant]
-                    self.rxRestaurants.accept(newValue)
-                    
-                }
-            }
-            
+        Restaurant.getAllData(dbReference: dbReference) { [weak self] restaurants in
+            self!.rxRestaurants.accept(restaurants)
         }
         
     }

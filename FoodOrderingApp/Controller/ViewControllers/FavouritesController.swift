@@ -26,7 +26,7 @@ extension FavouritesController {
         dbReference = Firestore.firestore()
         
         // Get Restaurants from Firestore
-        Restaurant.getAllData(dbReference: dbReference!, restaurants: favouriteRestaurants.self)
+        Restaurant.getFavouriteData(dbReference: dbReference!, restaurants: favouriteRestaurants.self)
         
         // RxSwift
         displayFavouriteRestaurantsOnTable()
