@@ -82,11 +82,6 @@ class OrderViewController: UIViewController {
                             
                             self.updateUI()
                             
-                            print(self.cart!.food)
-                            print(self.restaurant?.name ?? "No Restaurant Name")
-                            print(self.restaurant?.address ?? "No Restaurant Address")
-                            print(self.restaurant?.servise ?? "No Restaurant Servise")
-                            
                         } else {
                             print("Document does not exist")
                         }

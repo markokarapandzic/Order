@@ -25,52 +25,12 @@ extension FavouritesController {
         
         dbReference = Firestore.firestore()
         
-//        addUsersToDatabase()
-        getFavouritesFromDatabase()
+        // Get Restaurants from Firestore
+        Restaurant.getAllData(dbReference: dbReference!, restaurants: favouriteRestaurants.self)
+        
+        // RxSwift
         displayFavouriteRestaurantsOnTable()
     }
-}
-
-extension FavouritesController {
-    
-    func getFavouritesFromDatabase() {
-        
-        dbReference?.collection("users").document("5Trlr4CSkEYLvf2lJnX3").getDocument(completion: { (snapshot, error) in
-            
-            // Fucked up the Database
-            let restaurant1 = Restaurant(
-                restaurantID: "1aJJZdlpbTpW4BPJgxMr",
-                name: "Modena",
-                image: UIImage(named: "burrito")!,
-                address: "Centar 4",
-                rating: "4.3",
-                servise: 250
-            )
-            
-            let restaurant2 = Restaurant(
-                restaurantID: "6oAvEgbZVpEsRnSBltYq",
-                name: "Solemio",
-                image: UIImage(named: "burrito")!,
-                address: "Futoski Put 56",
-                rating: "4.3",
-                servise: 400
-            )
-            
-            let restaurant3 = Restaurant(
-                restaurantID: "8389012830jdas",
-                name: "Merak",
-                image: UIImage(named: "burrito")!,
-                address: "Novosadski Put 28",
-                rating: "4.8",
-                servise: 200
-            )
-            
-            self.favouriteRestaurants.accept([restaurant1, restaurant2, restaurant3])
-            
-        })
-        
-    }
-    
 }
 
 //MARK: - RxSwift Config
