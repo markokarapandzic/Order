@@ -43,11 +43,9 @@ class HomeViewController: UIViewController, CollectionViewCellDelagate {
     
     // Get Data from Firebase Firestore
     func retriveDBData() {
-        
         Restaurant.getAllData(dbReference: dbReference) { [weak self] restaurants in
             self!.rxRestaurants.accept(restaurants)
         }
-        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

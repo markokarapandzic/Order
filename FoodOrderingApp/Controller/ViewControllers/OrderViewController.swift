@@ -22,14 +22,16 @@ class OrderViewController: UIViewController {
     var dbReference: Firestore?
     var cart: Cart?
     var restaurant: Restaurant?
+    var foodInCart: BehaviorRelay<[String]> = BehaviorRelay(value: [])
+    var disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        mTableView.delegate = self
-        mTableView.dataSource = self
 
         dbReference = Firestore.firestore()
+        
+        // RxSwift Functions
+        displayTableView()
         
     }
     
@@ -42,56 +44,11 @@ class OrderViewController: UIViewController {
         // Read data from UserDefaults
         if let cartID = UserDefaults.standard.object(forKey: "cartID") as? String {
             
-            // Get Cart data from Firestore
-            dbReference?.collection("carts").document(cartID).getDocument() { (document, error) in
-                
-                if let document = document, document.exists {
-                    
-                    var food: [String] = []
-                    var price: [Int] = []
-                    let arrayOfFoodsAndPrices = document.data()?["food"] as! [String]
-                    
-                    for foodArray in arrayOfFoodsAndPrices {
-                        var array = foodArray.components(separatedBy: ",")
-                        food.append(array[0])
-                        price.append(Int(array[1]) ?? 0)
-                    }
-                    
-                    self.dbReference?.collection("restaurants").document(document.data()?["restaurantID"] as! String).getDocument() { (restaurantSnapshot, error) in
-                        
-                        if let restaurantFirestore = restaurantSnapshot, restaurantSnapshot!.exists {
-                            
-                            let pRestaurant = Restaurant(
-                                restaurantID: restaurantFirestore.documentID,
-                                name: restaurantFirestore.data()!["name"] as! String,
-                                image: UIImage(named: "burrito")!,
-                                address: restaurantFirestore.data()!["address"] as! String,
-                                rating: restaurantFirestore.data()!["rating"] as! String,
-                                servise: restaurantFirestore.data()!["servise"] as! Int
-                            )
-                            
-                            let pCart = Cart(
-                                cartID: document.documentID,
-                                food: food,
-                                price: price,
-                                restaurantID: document.data()?["restaurantID"] as! String
-                            )
-                            
-                            self.restaurant = pRestaurant
-                            self.cart = pCart
-                            
-                            self.updateUI()
-                            
-                        } else {
-                            print("Document does not exist")
-                        }
-                        
-                    }
-                    
-                } else {
-                    print("Document does not exist")
-                }
-                
+            Cart.getCartData(dbReference: dbReference!, cartID: cartID) { (restaurant, cart) in
+                self.restaurant = restaurant
+                self.cart = cart
+                self.foodInCart.accept(cart.food)
+                self.updateUI()
             }
             
         } else {
@@ -117,25 +74,19 @@ class OrderViewController: UIViewController {
 
 }
 
-extension OrderViewController: UITableViewDelegate, UITableViewDataSource {
+// MARK: - RxSwift
+extension OrderViewController {
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if cart != nil {
-            return (cart?.food.count)!
-        } else {
-            return 0
+    func displayTableView() {
+        foodInCart.bind(to: mTableView
+            .rx
+            .items(cellIdentifier: "orderItem", cellType: OrderItemViewCell.self)) { row, data, cell in
+                
+                cell.orderItemNameLbl.text = data
+                cell.orderItemPricelbl.text = String(self.cart!.price[row])
+                
         }
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell = mTableView.dequeueReusableCell(withIdentifier: "orderItem") as! OrderItemViewCell
-        
-        cell.orderItemNameLbl.text = cart?.food[indexPath.row]
-        cell.orderItemPricelbl.text = String(cart!.price[indexPath.row])
-        
-        return cell
-        
+        .disposed(by: disposeBag)
     }
     
 }
