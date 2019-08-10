@@ -9,12 +9,14 @@ CocoaPods
 ```
 ### Installing
 When you clone the repo to your device, first you will need to install all of the CocoaPods modules(Pods).
+
 But before all of that you will need to enter your project directory with your Command Terminal.
-After that install Pods with command Below.
+
+After that install Pods with the command Below.
 ```
 pod install
 ```
-Now you can run the project from your Xcode enviroment
+Now you can run the project from your Xcode enviroment.
 ## Built With
 * [RxSwift](https://github.com/ReactiveX/RxSwift/) - Ractive Programming
 * [Firebase](https://firebase.google.com/) - Database
