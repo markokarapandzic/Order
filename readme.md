@@ -18,6 +18,7 @@ pod install
 ```
 Now you can run the project from your Xcode enviroment.
 ## Built With
+* [Swift](https://developer.apple.com/swift/) - Programming Language
 * [RxSwift](https://github.com/ReactiveX/RxSwift/) - Ractive Programming
 * [Firebase](https://firebase.google.com/) - Database
 * [CocoaPods](https://cocoapods.org/) - Dependency Management
