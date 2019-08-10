@@ -81,10 +81,8 @@ extension OrderViewController {
         foodInCart.bind(to: mTableView
             .rx
             .items(cellIdentifier: "orderItem", cellType: OrderItemViewCell.self)) { row, data, cell in
-                
                 cell.orderItemNameLbl.text = data
                 cell.orderItemPricelbl.text = String(self.cart!.price[row])
-                
         }
         .disposed(by: disposeBag)
     }
