@@ -80,18 +80,6 @@
 			path = TabBarController;
 			sourceTree = "<group>";
 		};
-		356F37B822EAF27D005D4199 /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				35417E8322EA1CAD0019A008 /* restaurantViewCell.swift */,
-				35417E8522EA1FEF0019A008 /* restaurant2ViewCell.swift */,
-				3589FB6A22F0BEDD00B6D535 /* OrderItemViewCell.swift */,
-				351C8E5422F0CC37001A6723 /* FoodViewCell.swift */,
-				35452EC222F9BB4300C3017C /* FavouritesCell.swift */,
-			);
-			path = Cells;
-			sourceTree = "<group>";
-		};
 		356F37B922EAF3B6005D4199 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -147,7 +135,6 @@
 		359CDDEC22E781F70055FCE2 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				356F37B822EAF27D005D4199 /* Cells */,
 				35417E8122EA10910019A008 /* Restaurant.swift */,
 				356F37BD22EB0D56005D4199 /* Category.swift */,
 				356F37BF22EB0D90005D4199 /* Food.swift */,
@@ -161,6 +148,11 @@
 			isa = PBXGroup;
 			children = (
 				359CDDDE22E781D30055FCE2 /* Main.storyboard */,
+				35417E8322EA1CAD0019A008 /* restaurantViewCell.swift */,
+				35417E8522EA1FEF0019A008 /* restaurant2ViewCell.swift */,
+				3589FB6A22F0BEDD00B6D535 /* OrderItemViewCell.swift */,
+				351C8E5422F0CC37001A6723 /* FoodViewCell.swift */,
+				35452EC222F9BB4300C3017C /* FavouritesCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
